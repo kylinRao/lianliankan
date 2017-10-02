@@ -36,7 +36,9 @@
 <body>
 <div id="store">
     <div>
+
         <div style="float: left;">
+            <input id="count" value="{{ count }}" style="width:25px;height:11px;float: left"></input>
             <a id="wishlistNode" class="container" style="float:left;">
                 <tbody style="border: solid #000000">
                 <tr>
@@ -44,15 +46,15 @@
                 </tr>
                 </tbody>
             </a>
-            <table id="alreadyNode" class="container" style="float:left;">
+            <a id="alreadyNode" class="container" style="float:left;">
                 <tbody>
-                <tr>
-                    <td>已经选择</td>
-                </tr>
+{#                <tr>#}
+{#                    <td>已经选择</td>#}
+{#                </tr>#}
                 </tbody>
-            </table>
+            </a>
         </div>
-        <div style="float:left;border: solid #bfdfdf;overflow:auto;width: auto">
+        <div style="height: 750px;float:left;border: solid #bfdfdf;overflow:auto;width: auto">
             <div style="float: none">
                 <table style="float:none;">
                     <tbody>
@@ -81,17 +83,14 @@
                         new Source("wishlistNode");
                 var alreadyList = new Source("alreadyNode");
                 wishlist.insertNodes(false, [
-                    {% for ades in deses %}
-                    "<img width='30' height='30' src='{{ ades.pic }}'>",
+                    {% for ades in shuffleDeses %}
+                    "<img width='40' height='40' src='{{ ades.pic }}'>",
                     {% endfor %}
 
                 ]);
                 alreadyList.insertNodes(false, [
-                    "<img  src='{{ url_for('static', filename='images/a.jpg') }}'>",
-                    "haha",
-                    "2",
-                    "3 microphone",
-                    "4 fighter"
+
+
                 ]);
                 var aspect = dojo.require("dojo.aspect");
                 {% for ades in deses %}
@@ -109,7 +108,7 @@
                         console.log(childrenlen);
 
                         if (childrenlen == 2) {
-                            var trtdContent = $("#{{ ades.aid }} tr td").text();
+                            var trtdContent = $("#{{ ades.aid }} img").attr('src');
                             console.log(trtdContent + " indexOf " + "{{ ades.pic }}");
 
                             if (trtdContent.indexOf("{{ ades.pic }}") > -1) {
@@ -144,10 +143,24 @@
             if (childrenlen == 2) {
                 $("#{{ ades.aid }}").attr("style", "");
             }
+            if (childrenlen == 3) {
+                var trtdContent = $("#{{ ades.aid }} img").attr('src');
+                            console.log(trtdContent + " indexOf " + "{{ ades.pic }}");
+
+                            if (trtdContent.indexOf("{{ ades.pic }}") > -1) {
+                                $("#{{ ades.aid }}").attr("style", "background:#00ff7f");
+                            } else {
+                                $("#{{ ades.aid }}").attr("style", "background:red");
+                            }
+            }
 
             console.log("onDragEnd");
         });
     {% endfor %}
+$("#count").on("change",function(){
+    console.log($("#count").val());
+    window.location = "{{ url_for("lianliankan") }}"+$("#count").val();
+})
 </script>
 
 </body>

@@ -2,11 +2,13 @@
 import os
 import sqlite3
 import sys
+from copy import deepcopy
 reload(sys)
 sys.setdefaultencoding( "utf-8" )
 
 
-from flask import Flask, request, render_template,  g,flash
+from flask import Flask, request, render_template,  g,flash,redirect,url_for
+import random
 parpath = os.path.dirname(__file__)
 app = Flask(__name__)
 app.config.from_object("appConfig.DevelopmentConfig")
@@ -48,26 +50,17 @@ def exe(sql):
 
 @app.route('/')
 def lianliankan():
-    # sql = 'select * from Store limit 15;'
-    # exe(sql)
-    cur = g.db.execute("select aid,pic,name,price,basicPro,skill from store limit 15")
+    return redirect(url_for('lianliankanWithPostId',post_id=15))
+
+@app.route('/<post_id>')
+def lianliankanWithPostId(post_id):
+    cur = g.db.execute("select aid,pic,name,price,basicPro,skill from store ORDER BY random() LIMIT {post_id};".format(post_id=post_id))
     desDics = [dict(aid="aid_{aid}".format(aid=row[0]), pic=row[1],des=u"名称:{name};价格:{price};{basicPro};{skill}".format(name=row[2],price=row[3],basicPro=row[4],skill=row[5])) for row in cur.fetchall()]
-    print desDics
-    # desDics = [
-    #     {"aid": "aid_infoId01","pic":"haha" ,"des":  u"\u540d\u79f0:\u7834\u519b;\u4ef7\u683c:2950;\u7269\u7406\u653b\u51fb\uff1a200\u70b9;\u552f\u4e00\u88ab\u52a8 \u7834\u519b\uff1a\u76ee\u6807\u751f\u547d\u4f4e\u4e8e50%\u65f6\u4f24\u5bb3\u63d0\u9ad830%"},
-    #     {"aid": "aid_infoId02","pic":"http://img.bugu.18183.com/db_18183/static/wzry/static/images/equips/28.png", "des": u"这把宝剑效果超群了多久啊是发链接啊;螺丝钉解放邻居阿叔到了;飞机;垃圾收到了;放假啊老师;都放假啦就是;了都放假啦;就是的;来房间看;啊就是对方了解啊螺丝钉解放;啊就是的;"},
-    #     {"aid": "aid_infoId03","pic":"pic2", "des": u"这把宝剑效果超群了多久啊是发链接啊;螺丝钉解放邻居阿叔到了;飞机;垃圾收到了;放假啊老师;都放假啦就是;了都放假啦;就是的;来房间看;啊就是对方了解啊螺丝钉解放;啊就是的;"},
-    #     {"aid": "aid_infoId04","pic":"pic2", "des": u"这把宝剑效果超群了多久啊是发链接啊;螺丝钉解放邻居阿叔到了;飞机;垃圾收到了;放假啊老师;都放假啦就是;了都放假啦;就是的;来房间看;啊就是对方了解啊螺丝钉解放;啊就是的;"},
-    #     {"aid": "aid_infoId05","pic":"pic2", "des": u"这把宝剑效果超群了多久啊是发链接啊;螺丝钉解放邻居阿叔到了;飞机;垃圾收到了;放假啊老师;都放假啦就是;了都放假啦;就是的;来房间看;啊就是对方了解啊螺丝钉解放;啊就是的;"},
-    #           {'aid': 'aid_infoId120', 'des': u'\u540d\u79f0:\u7834\u519b;\u4ef7\u683c:2950;\u7269\u7406\u653b\u51fb\uff1a200\u70b9;\u552f\u4e00\u88ab\u52a8 \u7834\u519b\uff1a\u76ee\u6807\u751f\u547d\u4f4e\u4e8e50%\u65f6\u4f24\u5bb3\u63d0\u9ad830%', 'pic': u'http://img.bugu.18183.com/db_18183/static/wzry/static/images/equips/30.png'},
-    #
-    #
-    #
-    # ]
-
-
-    return render_template('demo.html', deses=desDics)
-
+    shuffleDeses = deepcopy(desDics)
+    random.shuffle(shuffleDeses)
+    # print shuffleDeses
+    # print desDics
+    return render_template('demo.html', deses=desDics,shuffleDeses=shuffleDeses,count=post_id)
 
 if __name__ == '__main__':
     app.run(debug=True)
