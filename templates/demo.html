@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>连连看</title>
+</head>
+{#<script data-dojo-config="async: 1" src="{{ url_for('static', filename='js/dojo/dojo.js') }}"></script>#}
+<script type="application/javascript" src="{{ url_for('static', filename='js/dojo/dojo.js') }}"></script>
+<script type="application/javascript" src="{{ url_for('static', filename='js/jquery-1.9.1.min.js') }}"></script>
+<script>
+
+</script>
+<style>
+    @import url("{{ url_for('static', filename='css/site-1.css') }}");
+    @import url("{{ url_for('static', filename='css/dnd.css') }}");
+
+</style>
+<style>
+    /*#store table {*/
+    /*border-right: 1px solid #F00;*/
+    /*border-bottom: 1px solid #F00*/
+    /*}*/
+
+    /*#store td {*/
+    /*border-left: 1px solid #F00;*/
+    /*border-top: 1px solid #F00*/
+    /*}*/
+
+    /*
+    css 注释：
+    只对table td设置左与上边框；
+    对table设置右与下边框；
+    为了便于截图，我们将css 注释说明换行排版
+    */
+</style>
+<body>
+<div id="store">
+    <div>
+        <div style="float: left;">
+            <a id="wishlistNode" class="container" style="float:left;">
+                <tbody style="border: solid #000000">
+                <tr>
+                    <td>等待选择</td>
+                </tr>
+                </tbody>
+            </a>
+            <table id="alreadyNode" class="container" style="float:left;">
+                <tbody>
+                <tr>
+                    <td>已经选择</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="float:left;border: solid #bfdfdf;overflow:auto;width: auto">
+            <div style="float: none">
+                <table style="float:none;">
+                    <tbody>
+                    <tr>
+                        <td>匹配</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% for ades in deses %}
+                <div style="float: none">
+                    <a id="{{ ades.aid }}" class="container dojoDndContainer dojoDndSource dojoDndTarget"></a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+    require(["dojo/dnd/Source",
+                "dojo/domReady!",
+                "dojo/dnd/Target",
+                "dojo/on", "dojo/dom", "dojo/aspect"],
+            function (Source, aspect, on, dom) {
+
+                var wishlist =
+                        new Source("wishlistNode");
+                var alreadyList = new Source("alreadyNode");
+                wishlist.insertNodes(false, [
+                    {% for ades in deses %}
+                    "<img width='30' height='30' src='{{ ades.pic }}'>",
+                    {% endfor %}
+
+                ]);
+                alreadyList.insertNodes(false, [
+                    "<img  src='{{ url_for('static', filename='images/a.jpg') }}'>",
+                    "haha",
+                    "2",
+                    "3 microphone",
+                    "4 fighter"
+                ]);
+                var aspect = dojo.require("dojo.aspect");
+                {% for ades in deses %}
+                    var {{ ades.aid }} = new Source("{{ ades.aid }}");
+                    {{ ades.aid }}.insertNodes(false, [
+                    "{{ ades.des }}",
+                ]);
+
+
+                    {#监听结果list，如果元素为2，并且符合正确答案，那么就给标志绿色背景#}
+
+                    var signalOnDrop{{ ades.aid }} = aspect.after({{ ades.aid }}, "onDrop", function () {
+                        console.log("onDrop");
+                        var childrenlen = $("#{{ ades.aid }}").children().length;
+                        console.log(childrenlen);
+
+                        if (childrenlen == 2) {
+                            var trtdContent = $("#{{ ades.aid }} tr td").text();
+                            console.log(trtdContent + " indexOf " + "{{ ades.pic }}");
+
+                            if (trtdContent.indexOf("{{ ades.pic }}") > -1) {
+                                $("#{{ ades.aid }}").attr("style", "background:#00ff7f");
+                            } else {
+                                $("#{{ ades.aid }}").attr("style", "background:red");
+                            }
+                        }
+                        if (childrenlen > 2) {
+                            $("#{{ ades.aid }}").attr("style", "background:red");
+                        }
+                    });
+                    var signal02 = aspect.after({{ ades.aid }}, "onDragend", function () {
+                        console.log("onDragEnd");
+                        var childrenlen = $("#{{ ades.aid }}").children().length;
+                        if (childrenlen == 1) {
+                            $("#{{ ades.aid }}").attr("style", "");
+                        }
+                    });
+
+
+
+                {% endfor %}
+
+
+            });
+    {% for ades in deses %}
+        $("#{{ ades.aid }}").on("DOMNodeRemoved", function () {
+
+            var childrenlen = $("#{{ ades.aid }}").children().length;
+            console.log(childrenlen);
+            if (childrenlen == 2) {
+                $("#{{ ades.aid }}").attr("style", "");
+            }
+
+            console.log("onDragEnd");
+        });
+    {% endfor %}
+</script>
+
+</body>

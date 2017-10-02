@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="Sqlite (Xerial) - mock.db" uuid="2e139ae5-6fdf-436a-8418-77b71a9460e3">
+    <database-info product="SQLite" version="3.16.1" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
+    <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
+    <schema name="" catalog=""/>
+    <table name="Store" schema="" catalog="" type="TABLE">
+      <column name="aid" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <column name="pic" sqlType="STRING" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="STRING" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="price" sqlType="INT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="basicPro" sqlType="STRING" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="skill" sqlType="STRING" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <primary-key columns="aid"/>
+    </table>
+    <table name="sqlite_sequence" schema="" catalog="" type="TABLE">
+      <column name="name" sqlType="" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="seq" sqlType="" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+    </table>
+    <table name="wzryStoreAttackType" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <column name="type" sqlType="INT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="des" sqlType="STRING" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+    </table>
+    <table name="wzryStoreDefendType" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <column name="type" sqlType="INT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="des" sqlType="STRING" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+    </table>
+    <table name="wzryStoreLayer" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <column name="type" sqlType="INT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="des" sqlType="STRING" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+    </table>
+    <table name="wzryStoreType" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <column name="type" sqlType="INT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="des" sqlType="STRING" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+    </table>
+  </data-source>
+</component>
