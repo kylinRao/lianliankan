@@ -15,7 +15,7 @@
 }
 
 .dojoDndItemOver {
-	background-color: #ededed;
+
 	cursor:pointer;
 }
 
@@ -54,7 +54,7 @@
 }
 
 .dojoDndAvatarItem {
-	background-color: #fff;
+
 	border-bottom:1px solid #666;
 }
 
